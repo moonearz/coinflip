@@ -92,7 +92,9 @@ class app(tk.Tk):
     
     """explain how to use, what labels mean"""
     def instructionsDialog(self):
-        pass
+        text = "Enter the number of coins you would like to simulate and the probability of heads you would like for the simulation."
+        text += "\n\n\nYou can update these values at any time by pressing enter. Press the flip button to simulate a flip."
+        messagebox.showinfo(title = "Instructions", message = text)
         
     def hitReturn(self, event):
         """start by checking inputs"""
