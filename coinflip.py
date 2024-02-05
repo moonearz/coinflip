@@ -7,16 +7,15 @@ from scipy.stats import binom
 """
 TO-DO:
 check that input values are valid
-make the grid work in the right way
 """
 class app(tk.Tk):
     def __init__(self):
         super().__init__()
-        """Just kinda choosing some default values"""
+        """Just kinda choosing some default values, 16 is like the most you can fit in the window on my computer"""
         self.numCoins = 16
         self.probHeads = 0.5
         self.makeCoins()
-        self.numLabel = tk.Label(master = self, text = "# of coins (max 100): ")
+        self.numLabel = tk.Label(master = self, text = "# of coins (max 16): ")
         self.numEntry = tk.Entry(master = self)
         self.probLabel = tk.Label(master = self, text = "probability of heads: ")
         self.probEntry = tk.Entry(master = self)
@@ -59,6 +58,7 @@ class app(tk.Tk):
     def flipCoins(self):
         counter = 0
         for index, coin in enumerate(self.coins):
+            coin.destroy()
             coin.flip()
             if(coin.getState() == 'heads'):
                 counter += 1
@@ -97,9 +97,9 @@ class app(tk.Tk):
         """
         you're gonna have to check if these inputs are valid
             """
+        self.clearGrid()
         self.setNumCoins(int(self.numEntry.get()))
         self.setProbHeads(float(self.probEntry.get()))
-        self.clearGrid()
         self.makeCoins()
         self.resizeUpdate()
         self.drawGrid()

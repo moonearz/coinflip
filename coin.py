@@ -18,10 +18,10 @@ class coin():
         return self.currentState
     
     def makeLabel(self, index, parent):
-        numRows = math.sqrt(parent.numCoins)
+        numRows = round(math.sqrt(parent.numCoins))
         img = parent.getImage(self.currentState)
         self.label = tk.Label(parent, image = img)
-        self.label.grid(row = math.floor(int((index / numRows))) + 1, column = int(index % numRows))
+        self.label.grid(row = (int((index / numRows))) + 1, column = int(index % numRows))
 
     def flip(self):
         value = random.uniform(0, 1)
