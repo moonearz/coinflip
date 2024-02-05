@@ -2,9 +2,12 @@ import tkinter as tk
 from coin import coin
 import math
 from PIL import Image, ImageTk
+from scipy.stats import binom
 
 """
-Write comments so you can come back to stuff ya dum-dum
+TO-DO:
+check that input values are valid
+make the grid work in the right way
 """
 class app(tk.Tk):
     def __init__(self):
@@ -21,6 +24,7 @@ class app(tk.Tk):
         self.eheads = tk.Label(master = self, text = "E(# of heads): \n 8")
         self.numHeadsLabel = tk.Label(master = self, text = "Observed # of heads: \n -")
         self.prob_of_flip = tk.Label(master = self, text = "Chance of last flip: \n -")
+        self.how_to_use = tk.Button(master = self, text = "How To Use", bg = "orange", command = self.instructionsDialog)
         self.bind('<Return>', self.hitReturn)
 
     def makeCoins(self):
@@ -49,11 +53,17 @@ class app(tk.Tk):
         self.eheads.grid(row = 1, column = 100)
         self.numHeadsLabel.grid(row = 2, column = 100)
         self.prob_of_flip.grid(row = 3, column = 100)
+        self.how_to_use.grid(row = 100, column = 0, columnspan= 101, sticky="nsew")
     
+    """build updating the labels into this function to make counting easy"""
     def flipCoins(self):
+        counter = 0
         for index, coin in enumerate(self.coins):
             coin.flip()
+            if(coin.getState() == 'heads'):
+                counter += 1
         self.drawGrid()
+        self.flipUpdate(counter)
     
     def getImage(self, state):
         if state == "heads":
@@ -64,6 +74,24 @@ class app(tk.Tk):
     def clearGrid(self):
         for coin in self.coins:
             coin.destroy()
+
+    def flipUpdate(self, number):
+        self.numHeadsLabel["text"] = "Observed # of heads: \n" + str(number)
+        self.prob_of_flip["text"] = "Chance of last flip: \n" + str(binom.pmf(number, self.numCoins, self.probHeads))
+
+    def resizeUpdate(self):
+        self.numHeadsLabel["text"] = "Observed # of heads: \n" + "-"
+        self.prob_of_flip["text"] = "Chance of last flip: \n" + "-"
+        self.eheads["text"] = "E(# of heads): \n" + str(self.formatFloat(float(float(self.numCoins) * self.probHeads)))
+
+    def formatFloat(self, input):
+        if(input % 1 == 0):
+            return int(input)
+        return input
+    
+    """explain how to use, what labels mean"""
+    def instructionsDialog(self):
+        pass
         
     def hitReturn(self, event):
         """
@@ -73,6 +101,7 @@ class app(tk.Tk):
         self.setProbHeads(float(self.probEntry.get()))
         self.clearGrid()
         self.makeCoins()
+        self.resizeUpdate()
         self.drawGrid()
 
 
