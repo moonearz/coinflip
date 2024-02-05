@@ -5,10 +5,6 @@ from PIL import Image, ImageTk
 from scipy.stats import binom
 from tkinter import messagebox
 
-"""
-TO-DO:
-make how to use dialog
-"""
 class app(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -90,7 +86,6 @@ class app(tk.Tk):
             return int(input)
         return input
     
-    """explain how to use, what labels mean"""
     def instructionsDialog(self):
         text = "Enter the number of coins you would like to simulate and the probability of heads you would like for the simulation."
         text += "\n\n\nYou can update these values at any time by pressing enter. Press the flip button to simulate a flip."
