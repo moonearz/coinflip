@@ -3,10 +3,11 @@ from coin import coin
 import math
 from PIL import Image, ImageTk
 from scipy.stats import binom
+from tkinter import messagebox
 
 """
 TO-DO:
-check that input values are valid
+make how to use dialog
 """
 class app(tk.Tk):
     def __init__(self):
@@ -94,15 +95,44 @@ class app(tk.Tk):
         pass
         
     def hitReturn(self, event):
-        """
-        you're gonna have to check if these inputs are valid
-            """
-        self.clearGrid()
-        self.setNumCoins(int(self.numEntry.get()))
-        self.setProbHeads(float(self.probEntry.get()))
-        self.makeCoins()
-        self.resizeUpdate()
-        self.drawGrid()
+        """start by checking inputs"""
+        intCheck = self.notValidInt(self.numEntry.get())
+        floatCheck = self.notValidFloat(self.probEntry.get())
+        if(intCheck[0] or floatCheck[0]):
+            if(intCheck[0]):
+                messagebox.showerror("Invalid Input", intCheck[1])
+            else:
+                messagebox.showerror("Invalid Input", floatCheck[1])
+        else:
+            self.clearGrid()
+            self.setNumCoins(int(self.numEntry.get()))
+            self.setProbHeads(float(self.probEntry.get()))
+            self.makeCoins()
+            self.resizeUpdate()
+            self.drawGrid()
+    
+    def notValidInt(self, entry): 
+        if(not entry.isdigit()):
+            self.numEntry.delete(0, 'end')
+            self.numEntry.insert(0, str(self.numCoins))
+            return [True, "# of coins entry is not an int"]
+        elif(int(entry) < 1 or int(entry) > 16):
+            self.numEntry.delete(0, 'end')
+            self.numEntry.insert(0, str(self.numCoins))
+            return [True, "# of coins entry is not within range bounds"]
+        return [False, ""]
+
+    def notValidFloat(self, entry): 
+        if entry.count('.') < 2 and entry.replace('.','', 1).isdigit():
+            if(float(entry) > 1 or float(entry) < 0):
+                self.probEntry.delete(0, 'end')
+                self.probEntry.insert(0, str(self.probHeads))
+                return [True, "probability entry is not between 0 and 1"]
+            return [False, ""]
+        else: 
+            self.probEntry.delete(0, 'end')
+            self.probEntry.insert(0, str(self.probHeads))
+            return [True, "probability entry is not a float"]
 
 
         
