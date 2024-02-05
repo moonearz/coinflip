@@ -7,6 +7,7 @@ class coin():
     def __init__(self):
         self.probHeads = 0.5
         self.currentState = "heads"
+        self.label = tk.Label()
 
     def __init__(self, prob):
         self.probHeads = prob
@@ -19,8 +20,8 @@ class coin():
     def makeLabel(self, index, parent):
         numRows = math.sqrt(parent.numCoins)
         img = parent.getImage(self.currentState)
-        label = tk.Label(parent, image = img)
-        label.grid(row = math.floor(int((index / numRows))) + 1, column = int(index % numRows))
+        self.label = tk.Label(parent, image = img)
+        self.label.grid(row = math.floor(int((index / numRows))) + 1, column = int(index % numRows))
 
     def flip(self):
         value = random.uniform(0, 1)
@@ -29,6 +30,8 @@ class coin():
         else:
             self.currentState = "heads"
 
+    def destroy(self):
+        self.label.destroy()
 
 
         
